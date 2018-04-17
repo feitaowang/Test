@@ -1,0 +1,35 @@
+USE [kmzy_v9]
+GO
+
+/****** Object:  UserDefinedFunction [dbo].[f_gnqx]    Script Date: 08/02/2017 15:56:00 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+--drop function f_gnqx
+create  function [dbo].[f_gnqx](@operid varchar(6)) returns varchar(2000)
+as
+begin
+    declare @str varchar(2000)
+    set @str = ''
+    if @operid = '9999'
+    	select @str = @str +','+cast(ltrim(rtrim(qxbm)) as varchar) from w_qxsz where  qxlb = 'm' 
+    else
+	select @str = @str +','+cast(ltrim(rtrim(gnqx)) as varchar) from w_czr_fb where oper_id = @operid and gnqx is not null 
+    if  len(@str)>0 
+	begin
+	  set @str = right(@str , len(@str) - 1)
+	end
+    else
+	begin
+	  set @str = 'no'
+	end
+    return @str
+end
+
+
+GO
+
+
